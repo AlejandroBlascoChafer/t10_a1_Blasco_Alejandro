@@ -22,7 +22,7 @@ data class AnimeList(
 )
 
 data class AnimeListEntry(
-    val score: Int,
+    val score: Double,
     val media: Anime
 )
 

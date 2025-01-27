@@ -30,7 +30,7 @@ class AnimeAdapter(private var listaAnime: List<AnimeListEntry>):
     }
 
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
-        val animeEntry = listaAnime.get(position)
+        val animeEntry = listaAnime[position]
         with (holder){
             binding.scoreText.text = animeEntry.score.toString()
             binding.titleText.text = animeEntry.media.title.english

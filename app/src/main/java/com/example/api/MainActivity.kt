@@ -44,10 +44,10 @@ class MainActivity : AppCompatActivity() {
                                         score
                                         media {
                                             title {
-                                                userPreferred
+                                                english
                                             }
                                             coverImage {
-                                                large
+                                                medium
                                             }
                                         }
                                     }
@@ -65,10 +65,15 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val response = apiService.getUserAnimeList(request)
 
+
+
                         val animeListEntries = response.data.MediaListCollection.lists.flatMap { it.entries }
-                        runOnUiThread {
-                            animeAdapter.updateData(animeListEntries)
+                        if (animeListEntries.isNotEmpty()){
+                            runOnUiThread {
+                                animeAdapter.updateData(animeListEntries)
+                            }
                         }
+
 
                     } catch (e: Exception){
                         Log.d("asd", "error", e)

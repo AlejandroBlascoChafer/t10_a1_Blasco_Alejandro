@@ -1,5 +1,10 @@
 package com.example.api.model
 
+data class GraphQLRequest(
+    val query: String,
+    val variables: Map<String, String>
+)
+
 data class UserAnimeListResponse(
     val data: MediaListCollectionData
 )
@@ -27,9 +32,9 @@ data class Anime(
 )
 
 data class Title(
-    val userPreferred: String
+    val english: String
 )
 
 data class CoverImage(
-    val large: String
+    val medium: String
 )

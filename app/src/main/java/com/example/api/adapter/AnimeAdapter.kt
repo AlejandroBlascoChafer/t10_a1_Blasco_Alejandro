@@ -1,45 +1,49 @@
+package com.example.api.adapter
+
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.api.R
 import com.example.api.databinding.ItemAnimeBinding
-import com.example.api.model.Anime
 import com.example.api.model.AnimeListEntry
 import com.squareup.picasso.Picasso
+import com.example.api.R
 
 
-class AnimeAdapter : ListAdapter<AnimeListEntry, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
+class AnimeAdapter(private var listaAnime: List<AnimeListEntry>):
+    RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
 
-    private lateinit var binding: ItemAnimeBinding
+
+    private lateinit var context: Context
+
+    inner class AnimeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val binding = ItemAnimeBinding.bind(itemView)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
-        val binding = ItemAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AnimeViewHolder(binding.root)
+        context = parent.context
+        val view = LayoutInflater.from(context).inflate(R.layout.item_anime, parent, false)
+        return AnimeViewHolder(view)
+
+
     }
 
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
-        val animeEntry = getItem(position)  // Cambié el tipo a AnimeListEntry
-        holder.bind(animeEntry)
-    }
-
-    inner class AnimeViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(animeEntry: AnimeListEntry) {
-            val anime = animeEntry.media
-            binding.titleText.text = anime.title.userPreferred
-            Picasso.get().load(anime.coverImage.large).into(binding.coverImage)
-            binding.scoreText.text = animeEntry.score.toString()  // Accedes al score aquí
+        val animeEntry = listaAnime.get(position)
+        with (holder){
+            binding.scoreText.text = animeEntry.score.toString()
+            binding.titleText.text = animeEntry.media.title.english
+            val imagen: String = animeEntry.media.coverImage.medium
+            Picasso.get().load(imagen).into(binding.coverImage)
         }
     }
 
-    class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeListEntry>() {
-        override fun areItemsTheSame(oldItem: AnimeListEntry, newItem: AnimeListEntry): Boolean {
-            return oldItem.media.title.userPreferred == newItem.media.title.userPreferred  // Comparar por ID de anime
-        }
+    override fun getItemCount(): Int = listaAnime.size
 
-        override fun areContentsTheSame(oldItem: AnimeListEntry, newItem: AnimeListEntry): Boolean {
-            return oldItem == newItem  // Comparar si los contenidos son iguales
-        }
+    fun updateData(newPeliculas: List<AnimeListEntry>) {
+        listaAnime = newPeliculas
+        notifyDataSetChanged()
     }
+
 }

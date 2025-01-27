@@ -1,0 +1,15 @@
+query GetrAnimeList {
+  MediaListCollection (userName: "AlexElRandom16", type: ANIME, status: COMPLETED, sort: SCORE_DESC){
+    lists {
+      entries {
+        id
+        score
+        media {
+          title {
+            english
+          }
+        }
+      }
+    }
+  }
+}
